@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a href="/">Main Page</a>    <a href="/newpost">New Post</a>
+
+    <h1>Build-A-Blog</h1>
+    <form method="post" action="/">
+    
+
+    <hr />
+
+    {% if posts|length == 0 %}
+    <p>No posts yet</p>
+    {% else %}
+
+        <div>
+            {% for blogpost in posts %}
+            <h3>
+            	<a href="/blog?id={{blogpost.id}}">{{blogpost.name}}</a>
+            </h3>
+            <div>
+            	 {{blogpost.body}}   
+            </div>
+            <hr />
+            {% endfor %}
+        </div>
+
+    {% endif %}
+
+    <hr />
+
+{% endblock %}
