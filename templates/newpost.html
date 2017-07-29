@@ -1,18 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <a href="/">Main Page</a> <a href="/newpost">New Post</a>
 
     <h1>New Blog Post<h1>
         <form method="post" action="/newpost">
             <div>
             <label>Title</label> <br>
-            <input type="text" name='name' />
+            <input type="text" name='name' value="{{fields.name}}" />
+            {% if errors['name'] %}
+                <span class="error">{{ errors['name'] }}</span>
+            {% endif %}
             </div>
 
             <div>
             <label>Body</label> <br>
-            <textarea name="body" rows="15" cols="60"></textarea>
+            <textarea name="body" rows="15" cols="60" value="{{fields.body}}"></textarea>
+            {% if errors['body'] %}
+                <span class="error">{{ errors['body'] }}</span>
+            {% endif %}
             </div>
 
             <div>

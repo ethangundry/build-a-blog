@@ -44,20 +44,42 @@ def blog():
 
 @app.route('/newpost', methods=['GET', 'POST'])
 def newpost():
+    #template defaults
+    fields = {}
+    errors = {}
+    has_error = False
 
     if request.method == 'POST':
         name = request.form['name']
         body = request.form['body']
+        fields['name'] = request.form['name']
+        fields['body'] = request.form['body']
 
-        post = Blogpost(name, body)
-        db.session.add(post)
-        db.session.commit()
+        #error for title
+        if not fields['name']:
+            errors['name'] = "You must have a title for your blog post."
+            has_error = True
+
+        #error for body
+        if not fields['body']:
+            errors['body'] = "You must have a body for your blog post."
+            has_error = True
+
+        #checks if there's an error or not
+        if not has_error:
+            #if no error, commits to database
+            post = Blogpost(name, body)
+            db.session.add(post)
+            db.session.commit()
         
-        #redirect to index if succesful
-        return redirect(url_for("blog", id=post.id))
+            #redirect to index if succesful
+            return redirect(url_for("index"))
+        else:
+            return render_template('newpost.html',title="New Post", fields=fields, errors=errors, has_error=has_error)
 
-    else :
-        return render_template("newpost.html",title="New Post")
+    else:
+        return render_template('newpost.html',title="New Post", fields=fields, errors=errors, has_error=has_error)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
